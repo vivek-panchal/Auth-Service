@@ -5,8 +5,9 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import sendMail from "../config/sendMail.js";
-import { registerSchema } from "../config/zod.js";
-import { getVerifyEmailHtml } from "../config/html.js";
+import { registerSchema , loginSchema} from "../config/zod.js";
+import { getOtpHtml, getVerifyEmailHtml } from "../config/html.js";
+import { generateToken } from "../config/generateToken.js";
 
 export const registerUser = TryCatch(async (req, res) => {
     // Registration logic here
@@ -46,7 +47,6 @@ export const registerUser = TryCatch(async (req, res) => {
         return res.status(400).json({ message: 'User with this email already exists' });
     }
 
-    
 
     const hashedPassword = await bcrypt.hash(password, 10);
     
@@ -78,7 +78,7 @@ export const registerUser = TryCatch(async (req, res) => {
 
 export const verifyUser = TryCatch(async (req, res) => {
     const { token } = req.params;
-    console.log('Verifying user with token:', token);
+    //console.log('Verifying user with token:', token);
     if(!token) {
         return res.status(400).json({ message: 'Verification token is required' });
     }
@@ -104,4 +104,85 @@ export const verifyUser = TryCatch(async (req, res) => {
 
     await redisClient.del(verificationKey);
     res.status(201).json({ message: 'Email verified successfully. You can now log in.' , user:{_id: newUser._id, name: newUser.name, email: newUser.email } });
+});
+
+export const loginUser = TryCatch(async (req, res) => {
+    // Login logic here
+    const sanitizedBody = sanitize(req.body);
+    const validatedData = loginSchema.safeParse(sanitizedBody);
+    //console.log('Login attempt with data:', sanitizedBody);
+    
+    if(!validatedData.success) {
+        const errors = validatedData.error;
+        let errorMessages = 'Validation failed';
+        let allErrors = [];
+        if(errors ?.issues && Array.isArray(errors.issues)) {
+            allErrors = errors.issues.map((issue) => ({
+                field: issue.path ? issue.path.join('.') : 'unknown',
+                message: issue.message || 'Invalid value',
+                code: issue.code,
+            }));
+            errorMessages = allErrors[0].message || errorMessages;
+        }
+        //console.log('Validation errors:', allErrors);
+
+        return res.status(400).json({ message: errorMessages, errors: allErrors });
+    }
+
+    const {email, password } = validatedData.data;
+    //console.log('Validated login data:', validatedData.data);
+
+    const rateLimitKey = `login-rate-limit:${req.ip}:${email}`;
+
+    if(await redisClient.get(rateLimitKey)) {
+        return res.status(429).json({ message: 'Too many login attempts. Please try again after 60 seconds.' });
+    }
+
+    const user = await User.findOne({ email });
+    //console.log('User found for login:', user);
+    if(!user) {
+        return res.status(400).json({ message: 'Invalid credentials' });
+    }   
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    //console.log('Password validation result:', isPasswordValid);
+    if(!isPasswordValid) {
+        return res.status(400).json({ message: 'Invalid credentials' });
+    }   
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    //console.log('Generated OTP:', OTP);
+    const otpKey = `otp:${email}`;
+    await redisClient.set(otpKey, JSON.stringify(otp), { EX: 300 }); // OTP valid for 5 minutes
+
+    const subject = 'Your Login OTP Code';
+    console.log('Sending OTP', otp);
+    const html = getOtpHtml({email, otp });
+    await sendMail({ email, subject, html });
+    await redisClient.set(rateLimitKey, 'true', { EX: 60 }); // Rate limit login attempts per IP+email for 1 minute
+    res.json({ message: 'OTP sent to your email. Please verify to complete login.' });
+});
+
+export const verifyOtp = TryCatch(async (req, res) => {
+    const { email, otp } = req.body;
+    if(!email || !otp) {
+        return res.status(400).json({ message: 'Email and OTP are required' });
+    }
+    const otpKey = `otp:${email}`;
+    const storedOtpJSON = await redisClient.get(otpKey);
+    if(!storedOtpJSON) {
+        return res.status(400).json({ message: 'OTP is invalid or has expired' });
+    }
+    const storedOtp = JSON.parse(storedOtpJSON);
+
+    if(storedOtp !== otp) {
+        return res.status(400).json({ message: 'Invalid OTP' });
+    }
+
+    let user = await User.findOne({ email });
+    if(!user) {
+        return res.status(400).json({ message: 'User not found' });
+    }
+
+    const tokenData = await generateToken(user._id, res);
+    await redisClient.del(otpKey);
+    res.status(200).json({ message: `Welcome back, ${user.name}!`, user });
 });
