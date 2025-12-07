@@ -78,7 +78,7 @@ export const registerUser = TryCatch(async (req, res) => {
 
 export const verifyUser = TryCatch(async (req, res) => {
     const { token } = req.params;
-    console.log('Verifying user with token:', token);
+    //console.log('Verifying user with token:', token);
     if(!token) {
         return res.status(400).json({ message: 'Verification token is required' });
     }
@@ -110,7 +110,7 @@ export const loginUser = TryCatch(async (req, res) => {
     // Login logic here
     const sanitizedBody = sanitize(req.body);
     const validatedData = loginSchema.safeParse(sanitizedBody);
-    console.log('Login attempt with data:', sanitizedBody);
+    //console.log('Login attempt with data:', sanitizedBody);
     
     if(!validatedData.success) {
         const errors = validatedData.error;
@@ -124,13 +124,13 @@ export const loginUser = TryCatch(async (req, res) => {
             }));
             errorMessages = allErrors[0].message || errorMessages;
         }
-        console.log('Validation errors:', allErrors);
+        //console.log('Validation errors:', allErrors);
 
         return res.status(400).json({ message: errorMessages, errors: allErrors });
     }
 
     const {email, password } = validatedData.data;
-    console.log('Validated login data:', validatedData.data);
+    //console.log('Validated login data:', validatedData.data);
 
     const rateLimitKey = `login-rate-limit:${req.ip}:${email}`;
 
@@ -139,17 +139,17 @@ export const loginUser = TryCatch(async (req, res) => {
     }
 
     const user = await User.findOne({ email });
-    console.log('User found for login:', user);
+    //console.log('User found for login:', user);
     if(!user) {
         return res.status(400).json({ message: 'Invalid credentials' });
     }   
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    console.log('Password validation result:', isPasswordValid);
+    //console.log('Password validation result:', isPasswordValid);
     if(!isPasswordValid) {
         return res.status(400).json({ message: 'Invalid credentials' });
     }   
     const OTP = Math.floor(100000 + Math.random() * 900000).toString();
-    console.log('Generated OTP:', OTP);
+    //console.log('Generated OTP:', OTP);
     const otpKey = `otp:${email}`;
     await redisClient.set(otpKey, JSON.stringify(OTP), { EX: 300 }); // OTP valid for 5 minutes
 
