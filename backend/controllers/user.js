@@ -7,7 +7,7 @@ import crypto from "crypto";
 import sendMail from "../config/sendMail.js";
 import { registerSchema , loginSchema} from "../config/zod.js";
 import { getOtpHtml, getVerifyEmailHtml } from "../config/html.js";
-import { generateToken } from "../config/generateToken.js";
+import { generateToken , verifyRefreshToken, generateAccessToken, revokeTokens } from "../config/generateToken.js";
 
 export const registerUser = TryCatch(async (req, res) => {
     // Registration logic here
@@ -154,7 +154,7 @@ export const loginUser = TryCatch(async (req, res) => {
     await redisClient.set(otpKey, JSON.stringify(otp), { EX: 300 }); // OTP valid for 5 minutes
 
     const subject = 'Your Login OTP Code';
-    console.log('Sending OTP', otp);
+    //console.log('Sending OTP', otp);
     const html = getOtpHtml({email, otp });
     await sendMail({ email, subject, html });
     await redisClient.set(rateLimitKey, 'true', { EX: 60 }); // Rate limit login attempts per IP+email for 1 minute
@@ -185,4 +185,25 @@ export const verifyOtp = TryCatch(async (req, res) => {
     const tokenData = await generateToken(user._id, res);
     await redisClient.del(otpKey);
     res.status(200).json({ message: `Welcome back, ${user.name}!`, user });
+});
+
+export const myProfile = TryCatch(async (req, res) => {
+    const user = req.user;
+    res.json({ user });
+});
+
+export const refreshToken = TryCatch(async (req, res) => {
+    const { refreshToken } = req.cookies || {};
+    //console.log('Refresh token request with token:', refreshToken);
+    //console.log('Cookies:', req.cookies);
+    if(!refreshToken) {
+        return res.status(401).json({ message: 'Refresh token not found. Please log in again.' });
+    }   
+
+    const decodedData = await verifyRefreshToken(refreshToken);
+    if(!decodedData) {
+        return res.status(401).json({ message: 'Invalid or expired refresh token. Please log in again.' });
+    }
+    generateAccessToken(decodedData.id, res);
+    res.status(200).json({ "message": "Access token refreshed successfully" });
 });
