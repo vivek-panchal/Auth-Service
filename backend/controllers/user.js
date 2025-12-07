@@ -7,6 +7,7 @@ import crypto from "crypto";
 import sendMail from "../config/sendMail.js";
 import { registerSchema , loginSchema} from "../config/zod.js";
 import { getOtpHtml, getVerifyEmailHtml } from "../config/html.js";
+import { generateToken } from "../config/generateToken.js";
 
 export const registerUser = TryCatch(async (req, res) => {
     // Registration logic here
@@ -153,6 +154,7 @@ export const loginUser = TryCatch(async (req, res) => {
     await redisClient.set(otpKey, JSON.stringify(otp), { EX: 300 }); // OTP valid for 5 minutes
 
     const subject = 'Your Login OTP Code';
+    console.log('Sending OTP', otp);
     const html = getOtpHtml({email, otp });
     await sendMail({ email, subject, html });
     await redisClient.set(rateLimitKey, 'true', { EX: 60 }); // Rate limit login attempts per IP+email for 1 minute
@@ -174,10 +176,13 @@ export const verifyOtp = TryCatch(async (req, res) => {
     if(storedOtp !== otp) {
         return res.status(400).json({ message: 'Invalid OTP' });
     }
-    const user = await User.findOne({ email });
+
+    let user = await User.findOne({ email });
     if(!user) {
         return res.status(400).json({ message: 'User not found' });
     }
+
+    const tokenData = await generateToken(user._id, res);
     await redisClient.del(otpKey);
-    res.json({ message: 'Login successful', user: { _id: user._id, name: user.name, email: user.email } });
+    res.status(200).json({ message: `Welcome back, ${user.name}!`, user });
 });
