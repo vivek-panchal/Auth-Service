@@ -207,3 +207,15 @@ export const refreshToken = TryCatch(async (req, res) => {
     generateAccessToken(decodedData.id, res);
     res.status(200).json({ "message": "Access token refreshed successfully" });
 });
+
+export const logoutUser = TryCatch(async (req, res) => {
+    const user = req.user;
+    await revokeTokens(user._id);
+    
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+
+    await redisClient.del(`user:${user._id}`);
+    
+    res.status(200).json({ message: 'Logged out successfully' });
+});

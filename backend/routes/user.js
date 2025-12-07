@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerUser, verifyUser, loginUser, verifyOtp, myProfile , refreshToken } from '../controllers/user.js';
+import { registerUser, verifyUser, loginUser, verifyOtp, myProfile , refreshToken, logoutUser } from '../controllers/user.js';
 import { isAuth } from '../middlewares/isAuth.js';
 
 const router = express.Router();
@@ -10,5 +10,6 @@ router.post('/login', loginUser);
 router.post('/verify', verifyOtp);
 router.get('/me', isAuth, myProfile);
 router.post('/refresh-token', refreshToken);
+router.post('/logout', isAuth, logoutUser);
 
 export default router;
