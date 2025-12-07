@@ -46,7 +46,6 @@ export const registerUser = TryCatch(async (req, res) => {
         return res.status(400).json({ message: 'User with this email already exists' });
     }
 
-    
 
     const hashedPassword = await bcrypt.hash(password, 10);
     
@@ -148,14 +147,37 @@ export const loginUser = TryCatch(async (req, res) => {
     if(!isPasswordValid) {
         return res.status(400).json({ message: 'Invalid credentials' });
     }   
-    const OTP = Math.floor(100000 + Math.random() * 900000).toString();
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
     //console.log('Generated OTP:', OTP);
     const otpKey = `otp:${email}`;
-    await redisClient.set(otpKey, JSON.stringify(OTP), { EX: 300 }); // OTP valid for 5 minutes
+    await redisClient.set(otpKey, JSON.stringify(otp), { EX: 300 }); // OTP valid for 5 minutes
 
     const subject = 'Your Login OTP Code';
-    const html = getOtpHtml({email, otp: OTP });
+    const html = getOtpHtml({email, otp });
     await sendMail({ email, subject, html });
     await redisClient.set(rateLimitKey, 'true', { EX: 60 }); // Rate limit login attempts per IP+email for 1 minute
     res.json({ message: 'OTP sent to your email. Please verify to complete login.' });
+});
+
+export const verifyOtp = TryCatch(async (req, res) => {
+    const { email, otp } = req.body;
+    if(!email || !otp) {
+        return res.status(400).json({ message: 'Email and OTP are required' });
+    }
+    const otpKey = `otp:${email}`;
+    const storedOtpJSON = await redisClient.get(otpKey);
+    if(!storedOtpJSON) {
+        return res.status(400).json({ message: 'OTP is invalid or has expired' });
+    }
+    const storedOtp = JSON.parse(storedOtpJSON);
+
+    if(storedOtp !== otp) {
+        return res.status(400).json({ message: 'Invalid OTP' });
+    }
+    const user = await User.findOne({ email });
+    if(!user) {
+        return res.status(400).json({ message: 'User not found' });
+    }
+    await redisClient.del(otpKey);
+    res.json({ message: 'Login successful', user: { _id: user._id, name: user.name, email: user.email } });
 });
