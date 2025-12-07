@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import { createClient } from 'redis';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 await connectDB();
@@ -25,6 +26,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+app.use(cookieParser());
 
 // Importing routes
 import userRoutes from './routes/user.js';
