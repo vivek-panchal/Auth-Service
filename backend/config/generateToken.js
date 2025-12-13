@@ -14,14 +14,14 @@ export const generateToken = async (id, res) => {
 
     res.cookie('accessToken', accessToken, {
         httpOnly: true,
-        //secure: true,
-        sameSite: 'Strict',
+        secure: true,
+        sameSite: 'none',
         maxAge: 15 * 60 * 1000,
     });
     res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
-        //secure: true,
-        sameSite: 'Strict',
+        secure: true,
+        sameSite: 'none',
         maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     return { accessToken, refreshToken };
