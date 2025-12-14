@@ -50,7 +50,7 @@ export const generateAccessToken = (id, res) => {
     });
     res.cookie('accessToken', accessToken, {
         httpOnly: true,
-        //secure: true,
+        secure: true,
         sameSite: 'Strict',
         maxAge: 15 * 60 * 1000,
     });

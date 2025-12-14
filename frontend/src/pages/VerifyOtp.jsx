@@ -3,11 +3,15 @@ import { Link } from 'react-router-dom'
 import { server } from '../main';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { AppData } from '../context/AppContext.jsx';
 
 const VerifyOtp = () => {
   const [otp, setOtp] = React.useState('');
   const [btnLoading, setBtnLoading] = React.useState(false);
   const email = localStorage.getItem('email');
+  const navigate = useNavigate();
+  const {setIsAuth , setUser} = AppData();
   const submitHandler = async (e) => {
     setBtnLoading(true);
     e.preventDefault();
@@ -20,6 +24,9 @@ const VerifyOtp = () => {
       );
       // Handle success
       toast.success(data.message);
+      setIsAuth(true);
+      setUser(data.user);
+      navigate('/');
       localStorage.clear('email');
     } catch (error) {
       toast.error(error.response.data.message);
