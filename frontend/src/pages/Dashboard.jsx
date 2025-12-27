@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { toast } from 'react-toastify';
 import { server } from '../main.jsx';
 import api from '../apiIntercepter.js';
-import { useEffect } from 'react';
 import { Shield, CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
