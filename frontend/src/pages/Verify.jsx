@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState , useEffect} from 'react'
+import { useState , useEffect, useCallback} from 'react'
 import { useParams, Link } from 'react-router-dom';
 import { server } from '../main.jsx';
 import axios from 'axios';
@@ -12,7 +12,7 @@ const Verify = () => {
   const params = useParams();
   const [loading, setLoading] = useState(true);
 
-  async function verifyUser(){
+  const verifyUser = useCallback(async () => {
     try {
       const {data} = await axios.post(`${server}/api/v1/verify/${params.token}`);
       console.log("Verify response:", data);
@@ -24,12 +24,11 @@ const Verify = () => {
     finally{
       setLoading(false);
     }
-  }
+  }, [params.token]);
 
   useEffect(() => {
     verifyUser();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [verifyUser]);
   
   return (
     <>

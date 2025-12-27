@@ -30,6 +30,7 @@ export const AppProvider = ({ children }) => {
             toast.success(data.data.message);
             navigate('/login');
         } catch {
+            // Error is intentionally not logged to avoid exposing sensitive session data
             toast.error("Error logging out user");
         }
     }
