@@ -21,11 +21,13 @@ export const verifyCSRFToken = async(req, res, next) => {
             return next();
         }
         
-        const userId = req.user?.id; 
+        const userId = req.user?._id; 
         if (!userId) {
             return res.status(401).json({ message: 'User not authenticated' });
         }
-        const clientToken = req.headers['x-csrf-token'] || req.headers['csrf-token'] || req.headers['x-xsrf-token'];
+        // HTTP headers are normalized to lowercase by Express
+        const clientToken = req.headers['x-csrf-token'] || req.headers['x-csrftoken'] || req.headers['x-xsrf-token'] || req.cookies?.csrfToken;
+
         if (!clientToken) {
             return res.status(403).json({ message: 'CSRF Token missing , Please refresh the page', code: 'CSRF_TOKEN_MISSING' });
         }
