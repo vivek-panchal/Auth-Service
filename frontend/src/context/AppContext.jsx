@@ -16,6 +16,8 @@ export const AppProvider = ({ children }) => {
             setIsAuth(true);
         } catch (error) {
             console.log("Error fetching user:", error);
+            setUser(null);
+            setIsAuth(false);
         }finally{
             setLoading(false);
         }
@@ -26,7 +28,7 @@ export const AppProvider = ({ children }) => {
             const data = await api.post(`api/v1/logout`);
             setUser(null);
             setIsAuth(false);
-            toast.success("User logged out successfully");
+            toast.success(data.data.message);
             navigate('/login');
         } catch (error) {
             toast.error("Error logging out user");

@@ -1,4 +1,4 @@
-import React , {useState} from 'react'
+import React , { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { server } from '../main';
 import { toast } from 'react-toastify';
@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { AppData } from '../context/AppContext.jsx';
 
 const VerifyOtp = () => {
-  const [otp, setOtp] = React.useState('');
-  const [btnLoading, setBtnLoading] = React.useState(false);
+  const [otp, setOtp] = useState('');
+  const [btnLoading, setBtnLoading] = useState(false);
   const email = localStorage.getItem('email');
   const navigate = useNavigate();
   const {setIsAuth , setUser} = AppData();
@@ -16,12 +16,13 @@ const VerifyOtp = () => {
     setBtnLoading(true);
     e.preventDefault();
     try {
-      const {data} = await axios.post(`${server}/api/v1/verify`, 
+      const { data } = await axios.post(`${server}/api/v1/verify`, 
         {email, otp},
         {
           withCredentials: true,
         },
       );
+      console.log("Verify OTP response:", data);
       // Handle success
       toast.success(data.message);
       setIsAuth(true);
