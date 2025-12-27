@@ -1,5 +1,5 @@
 import React , { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {toast} from 'react-toastify';
 import { server } from '../main.jsx';
 import axios from 'axios';
@@ -27,8 +27,8 @@ const Register = () => {
       setPassword('');
     } catch (error) {
       toast.error(error.response.data.message);
-    }finally {setBtnLoading
-      (false);
+    }finally {
+      setBtnLoading(false);
     }
   }
   return (

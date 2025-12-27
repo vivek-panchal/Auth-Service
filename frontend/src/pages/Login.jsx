@@ -25,8 +25,8 @@ const Login = () => {
       navigate('/verifyotp');
     } catch (error) {
       toast.error(error.response.data.message);
-    }finally {setBtnLoading
-      (false);
+    }finally {
+      setBtnLoading(false);
     }
   }
   return (

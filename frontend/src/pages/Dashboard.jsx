@@ -1,24 +1,24 @@
-import axios from 'axios';
 import React from 'react'
 import { toast } from 'react-toastify';
 import { server } from '../main.jsx';
 import api from '../apiIntercepter.js';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Shield, CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   const [adminData, setAdminData] = React.useState(null); 
-  async function fetchAdminData(){
-    try {
-      const {data} = await api.get(`${server}/api/v1/admin` , { withCredentials: true });
-      setAdminData(data.message);
-      
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  }
+  
   useEffect(() => {
+    async function fetchAdminData(){
+      try {
+        const {data} = await api.get(`${server}/api/v1/admin` , { withCredentials: true });
+        setAdminData(data.message);
+        
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
+    }
     fetchAdminData();
   }, []);
   
