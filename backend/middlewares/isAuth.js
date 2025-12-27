@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { redisClient } from '../index.js';
 import User from '../models/User.js';
+import { isSessionActive } from '../config/generateToken.js';
 
 export const isAuth = async (req, res, next) => {
     
@@ -15,9 +16,19 @@ export const isAuth = async (req, res, next) => {
             return res.status(400).json({ message: 'Token Expired or Invalid' });
         }
 
+        const sessionActive = await isSessionActive(decodedData.id, decodedData.sessionId);
+        if(!sessionActive){
+            res.clearCookie('accessToken');
+            res.clearCookie('refreshToken');
+            res.clearCookie('csrfToken');
+            
+            return  res.status(401).json({ message: 'Session is no longer active. Please log in again.' });
+        }
+
         const cacheUser = await redisClient.get(`user:${decodedData.id}`);
         if(cacheUser) {
            req.user = JSON.parse(cacheUser);
+           req.sessionId = decodedData.sessionId;
            return next();
         }
 
@@ -28,6 +39,7 @@ export const isAuth = async (req, res, next) => {
 
         await redisClient.setEx(`user:${user._id}`, 60 * 60, JSON.stringify(user));
         req.user = user;
+        req.sessionId = decodedData.sessionId;
 
         next();
 

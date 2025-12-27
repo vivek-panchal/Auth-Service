@@ -185,12 +185,23 @@ export const verifyOtp = TryCatch(async (req, res) => {
 
     const tokenData = await generateToken(user._id, res);
     await redisClient.del(otpKey);
-    res.status(200).json({ message: `Welcome back, ${user.name}!`, user });
+    res.status(200).json({ message: `Welcome back, ${user.name}!`, user, sessionInfo:{sessionId: tokenData.sessionId, loginTime: new Date().toISOString(), csrfToken: tokenData.csrfToken} });
 });
 
 export const myProfile = TryCatch(async (req, res) => {
     const user = req.user;
-    res.json({ user });
+    const sessionId = req.sessionId;
+    const sessionData = await redisClient.get(`session:${sessionId}`);
+    let sessionInfo = null;
+    if(sessionData){
+        const parsedSession = JSON.parse(sessionData);
+        sessionInfo = {
+            sessionId,
+            loginTime: parsedSession.createdAt,
+            lastActivity: parsedSession.lastActivity,
+        };
+    }
+    res.json({ user, sessionInfo });
 });
 
 export const refreshToken = TryCatch(async (req, res) => {
@@ -203,9 +214,13 @@ export const refreshToken = TryCatch(async (req, res) => {
 
     const decodedData = await verifyRefreshToken(refreshToken);
     if(!decodedData) {
-        return res.status(401).json({ message: 'Invalid or expired refresh token. Please log in again.' });
+        res.clearCookie('accessToken');
+        res.clearCookie('refreshToken');
+        res.clearCookie('csrfToken');
+
+        return res.status(401).json({ message: 'Session Expired. Please log in again.' });
     }
-    generateAccessToken(decodedData.id, res);
+    generateAccessToken(decodedData.id, decodedData.sessionId, res);
     res.status(200).json({ "message": "Access token refreshed successfully" });
 });
 

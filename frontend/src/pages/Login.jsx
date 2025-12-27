@@ -18,6 +18,7 @@ const Login = () => {
         email,
         password,
       });
+      console.log("Login response jsx:", data);
       toast.success(data.message); 
       localStorage.setItem('email', email);
       navigate('/verifyotp');
