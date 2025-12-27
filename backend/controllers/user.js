@@ -227,3 +227,7 @@ export const refreshCsrfToken = TryCatch(async (req, res) => {
     const newCsrfToken = await generateCSRFToken(user._id, res);
     res.status(200).json({ message: 'CSRF token refreshed successfully', csrfToken: newCsrfToken });
 });
+
+export const adminController = TryCatch(async (req, res) => {
+    res.status(200).json({ message: 'Welcome, Admin! You have access to this protected route.' });
+});

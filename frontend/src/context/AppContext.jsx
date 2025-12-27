@@ -11,8 +11,8 @@ export const AppProvider = ({ children }) => {
   const [isAuth , setIsAuth]= useState(false);
   async function fetchUser(){
         try {
-            const data = await api.get(`api/v1/me`);
-            setUser(data);
+            const response = await api.get(`api/v1/me`);
+            setUser(response.data.user);
             setIsAuth(true);
         } catch (error) {
             console.log("Error fetching user:", error);
