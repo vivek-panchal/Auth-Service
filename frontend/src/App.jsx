@@ -18,8 +18,8 @@ const App = () => {
         <Routes>
           <Route path='/' element={ isAuth ? <Home/> : <Login/>} />
           <Route path='/login' element={isAuth ? <Home/> : <Login/>} />
-          <Route path='/register' element={<Register/>} />
-          <Route path='/verify' element={<Verify/>} />
+          <Route path='/register' element={isAuth ? <Home/> : <Register/>} />
+          <Route path='/token/:token' element={isAuth ? <Home/> : <Verify/>} />
           <Route path='/verifyotp' element={ isAuth ? <Home/> : <VerifyOtp/>} />
         </Routes>
         <ToastContainer />
