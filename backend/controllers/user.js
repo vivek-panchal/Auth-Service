@@ -8,6 +8,7 @@ import sendMail from "../config/sendMail.js";
 import { registerSchema , loginSchema} from "../config/zod.js";
 import { getOtpHtml, getVerifyEmailHtml } from "../config/html.js";
 import { generateToken , verifyRefreshToken, generateAccessToken, revokeTokens } from "../config/generateToken.js";
+import { generateCSRFToken } from "../config/csrfMiddleware.js";
 
 export const registerUser = TryCatch(async (req, res) => {
     // Registration logic here
@@ -214,8 +215,15 @@ export const logoutUser = TryCatch(async (req, res) => {
     
     res.clearCookie('accessToken');
     res.clearCookie('refreshToken');
+    res.clearCookie('csrfToken');
 
     await redisClient.del(`user:${user._id}`);
     
     res.status(200).json({ message: 'Logged out successfully' });
+});
+
+export const refreshCsrfToken = TryCatch(async (req, res) => {
+    const user = req.user;
+    const newCsrfToken = await generateCSRFToken(user._id, res);
+    res.status(200).json({ message: 'CSRF token refreshed successfully', csrfToken: newCsrfToken });
 });
