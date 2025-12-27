@@ -1,55 +1,144 @@
-import React , { useState } from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import {toast} from 'react-toastify';
-import { server } from '../main.jsx';
-import axios from 'axios';
-
+import { toast } from 'react-toastify'
+import { server } from '../main.jsx'
+import axios from 'axios'
+import { Mail, Lock, Shield, ArrowRight, Check } from 'lucide-react'
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [btnLoading, setBtnLoading] = useState(false);
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [btnLoading, setBtnLoading] = useState(false)
+  const navigate = useNavigate()
+
   const submitHandler = async (e) => {
-    setBtnLoading(true);
-    e.preventDefault();
+    setBtnLoading(true)
+    e.preventDefault()
     try {
-      const {data} = await axios.post(`${server}/api/v1/login`, {
-        email,
-        password,
-      });
-      console.log("Login response jsx:", data);
-      toast.success(data.message); 
-      localStorage.setItem('email', email);
-      navigate('/verifyotp');
+      const { data } = await axios.post(`${server}/api/v1/login`, { email, password })
+      toast.success(data.message)
+      localStorage.setItem('email', email)
+      navigate('/verifyotp')
     } catch (error) {
-      toast.error(error.response.data.message);
-    }finally {setBtnLoading
-      (false);
+      toast.error(error.response?.data?.message || 'Login failed')
+    } finally {
+      setBtnLoading(false)
     }
   }
+
   return (
-    <section className="text-gray-600 body-font">
-      <div className="container px-5 py-24 mx-auto flex flex-wrap items-center">
-        <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
-          <h1 className="title-font font-medium text-3xl text-gray-900">Slow-carb next level shoindcgoitch ethical authentic, poko scenester</h1>
-          <p className="leading-relaxed mt-4">Poke slow-carb mixtape knausgaard, typewriter street art gentrify hammock starladder roathse. Craies vegan tousled etsy austin.</p>
+    <div className="min-h-screen flex">
+      <div className="auth-bg"></div>
+      
+      {/* Left Panel - Branding */}
+      <div className="hidden lg:flex lg:w-1/2 flex-col justify-center px-12 xl:px-16">
+        <div className="max-w-md">
+          <div className="feature-badge mb-6">
+            <Shield className="w-4 h-4" />
+            <span>Secure Platform</span>
+          </div>
+
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-11 h-11 rounded-xl bg-[var(--accent)] flex items-center justify-center">
+              <Shield className="w-6 h-6 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold text-[var(--text-primary)]">AuthGuard</h1>
+          </div>
+
+          <h2 className="text-3xl xl:text-4xl font-bold text-[var(--text-primary)] leading-tight mb-4">
+            Welcome back
+          </h2>
+
+          <p className="text-[var(--text-secondary)] mb-8">
+            Sign in to access your secure account with enterprise-grade protection.
+          </p>
+
+          <div className="space-y-3">
+            {['Two-Factor Authentication', 'End-to-End Encryption', 'Secure Sessions'].map((feature) => (
+              <div key={feature} className="feature-item">
+                <div className="feature-icon">
+                  <Check />
+                </div>
+                <span className="text-[var(--text-secondary)] text-sm">{feature}</span>
+              </div>
+            ))}
+          </div>
         </div>
-        <form onSubmit={submitHandler} className="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
-          <h2 className="text-gray-900 text-lg font-medium title-font mb-5">Sign Up</h2>
-          <div className="relative mb-4">
-            <label htmlFor="email" className="leading-7 text-sm text-gray-600">Email</label>
-            <input type="email" id="email" name="email" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          </div>
-          <div className="relative mb-4">
-            <label htmlFor="password" className="leading-7 text-sm text-gray-600">Password</label>
-            <input type="password" id="password" name="password" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          </div>
-          <button className="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg" disabled={btnLoading}>{btnLoading ? 'Submitting...' : 'Login'}</button>
-          <Link to="/register" className="text-xs text-gray-500 mt-3">Dont have an account?</Link>
-        </form>
       </div>
-    </section>
+
+      {/* Right Panel - Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6">
+        <div className="auth-card form-container">
+          {/* Mobile Logo */}
+          <div className="lg:hidden flex items-center justify-center gap-2 mb-6">
+            <div className="w-10 h-10 rounded-lg bg-[var(--accent)] flex items-center justify-center">
+              <Shield className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-lg font-bold gradient-text">AuthGuard</span>
+          </div>
+
+          <div className="text-center mb-6">
+            <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-1">Sign In</h2>
+            <p className="text-[var(--text-secondary)] text-sm">Enter your credentials to continue</p>
+          </div>
+
+          <form onSubmit={submitHandler}>
+            <div className="form-group">
+              <label className="form-label">Email</label>
+              <div className="input-wrapper">
+                <Mail className="input-icon w-4 h-4" />
+                <input
+                  type="email"
+                  className="form-input"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Password</label>
+              <div className="input-wrapper">
+                <Lock className="input-icon w-4 h-4" />
+                <input
+                  type="password"
+                  className="form-input"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="submit" className="btn btn-primary btn-full mt-2" disabled={btnLoading}>
+              {btnLoading ? (
+                <>
+                  <div className="spinner"></div>
+                  Signing in...
+                </>
+              ) : (
+                <>
+                  Sign In
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="divider">
+            <span className="divider-text">New here?</span>
+          </div>
+
+          <p className="text-center text-[var(--text-secondary)] text-sm">
+            Don't have an account?{' '}
+            <Link to="/register" className="auth-link">Create one</Link>
+          </p>
+        </div>
+      </div>
+    </div>
   )
 }
 

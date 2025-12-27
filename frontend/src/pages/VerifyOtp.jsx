@@ -1,60 +1,111 @@
-import React , { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { server } from '../main';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { AppData } from '../context/AppContext.jsx';
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { server } from '../main'
+import { toast } from 'react-toastify'
+import axios from 'axios'
+import { AppData } from '../context/AppContext.jsx'
+import { ShieldCheck, KeyRound, ArrowRight, Mail, ArrowLeft, Info } from 'lucide-react'
 
 const VerifyOtp = () => {
-  const [otp, setOtp] = useState('');
-  const [btnLoading, setBtnLoading] = useState(false);
-  const email = localStorage.getItem('email');
-  const navigate = useNavigate();
-  const {setIsAuth , setUser} = AppData();
+  const [otp, setOtp] = useState('')
+  const [btnLoading, setBtnLoading] = useState(false)
+  const email = localStorage.getItem('email')
+  const navigate = useNavigate()
+  const { setIsAuth, setUser } = AppData()
+
   const submitHandler = async (e) => {
-    setBtnLoading(true);
-    e.preventDefault();
+    setBtnLoading(true)
+    e.preventDefault()
     try {
-      const { data } = await axios.post(`${server}/api/v1/verify`, 
-        {email, otp},
-        {
-          withCredentials: true,
-        },
-      );
-      console.log("Verify OTP response:", data);
-      // Handle success
-      toast.success(data.message);
-      setIsAuth(true);
-      setUser(data.user);
-      navigate('/');
-      localStorage.clear('email');
+      const { data } = await axios.post(
+        `${server}/api/v1/verify`,
+        { email, otp },
+        { withCredentials: true }
+      )
+      toast.success(data.message)
+      setIsAuth(true)
+      setUser(data.user)
+      navigate('/')
+      localStorage.removeItem('email')
     } catch (error) {
-      toast.error(error.response.data.message);
-    }finally {
-      setBtnLoading(false);
+      toast.error(error.response?.data?.message || 'Verification failed')
+    } finally {
+      setBtnLoading(false)
     }
-  };
+  }
 
   return (
-    <section className="text-gray-600 body-font">
-      <div className="container px-5 py-24 mx-auto flex flex-wrap items-center">
-        <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
-          <h1 className="title-font font-medium text-3xl text-gray-900">Slow-carb next level shoindcgoitch ethical authentic, poko scenester</h1>
-          <p className="leading-relaxed mt-4">Poke slow-carb mixtape knausgaard, typewriter street art gentrify hammock starladder roathse. Craies vegan tousled etsy austin.</p>
-        </div>
-        <form onSubmit={submitHandler} className="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
-          <h2 className="text-gray-900 text-lg font-medium title-font mb-5">Verify OTP</h2>
-          <div className="relative mb-4">
-            <label htmlFor="otp" className="leading-7 text-sm text-gray-600">Otp</label>
-            <input type="number" id="otp" name="otp" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" value={otp} onChange={(e) => setOtp(e.target.value)} required />
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="auth-bg"></div>
+      
+      <div className="auth-card form-container">
+        <div className="text-center mb-6">
+          <div className="w-16 h-16 mx-auto rounded-2xl bg-[var(--accent-glow)] border border-[var(--border-accent)] flex items-center justify-center mb-5 float-animation">
+            <ShieldCheck className="w-8 h-8 text-[var(--accent-light)]" />
           </div>
-          <button className="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg" disabled={btnLoading}>{btnLoading ? 'Submitting...' : 'Verify'}</button>
-          <Link to="/login" className="text-xs text-gray-500 mt-3">Go to Login</Link>
+          <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-1">Verify Your Identity</h2>
+          <p className="text-[var(--text-secondary)] text-sm">We've sent a code to your email</p>
+          
+          {email && (
+            <div className="mt-3 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border)]">
+              <Mail className="w-4 h-4 text-[var(--accent-light)]" />
+              <span className="text-[var(--text-secondary)] text-sm">{email}</span>
+            </div>
+          )}
+        </div>
+
+        <form onSubmit={submitHandler}>
+          <div className="form-group">
+            <label className="form-label">Verification Code</label>
+            <div className="input-wrapper">
+              <KeyRound className="input-icon w-4 h-4" />
+              <input
+                type="text"
+                className="form-input text-center tracking-widest font-semibold"
+                placeholder="000000"
+                maxLength="6"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+                required
+              />
+            </div>
+            <p className="text-[var(--text-muted)] text-xs mt-2 text-center">
+              Enter the 6-digit code sent to your email
+            </p>
+          </div>
+
+          <button type="submit" className="btn btn-primary btn-full" disabled={btnLoading}>
+            {btnLoading ? (
+              <>
+                <div className="spinner"></div>
+                Verifying...
+              </>
+            ) : (
+              <>
+                Verify & Continue
+                <ArrowRight className="w-4 h-4" />
+              </>
+            )}
+          </button>
         </form>
+
+        <div className="text-center mt-5">
+          <Link to="/login" className="inline-flex items-center gap-2 text-[var(--text-muted)] hover:text-[var(--accent-light)] text-sm transition-colors">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Login
+          </Link>
+        </div>
+
+        <div className="alert alert-info mt-5">
+          <Info className="w-4 h-4 shrink-0 mt-0.5" />
+          <div>
+            <p className="font-medium text-sm">Security Notice</p>
+            <p className="text-xs mt-1 opacity-80">Never share your OTP with anyone.</p>
+          </div>
+        </div>
       </div>
-    </section>
-  );
-};
+    </div>
+  )
+}
 
 export default VerifyOtp
