@@ -5,6 +5,7 @@ import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 import Verify from './pages/Verify.jsx'
 import VerifyOtp from './pages/VerifyOtp.jsx'
+import Dashboard from './pages/Dashboard.jsx'
 import {ToastContainer} from 'react-toastify';
 import { AppData } from './context/AppContext.jsx'
 import Loading from './Loading.jsx'
@@ -21,6 +22,7 @@ const App = () => {
           <Route path='/register' element={isAuth ? <Home/> : <Register/>} />
           <Route path='/token/:token' element={isAuth ? <Home/> : <Verify/>} />
           <Route path='/verifyotp' element={ isAuth ? <Home/> : <VerifyOtp/>} />
+          <Route path='/dashboard' element={ isAuth ? <Dashboard/> : <Login/>} />
         </Routes>
         <ToastContainer />
       </BrowserRouter>
