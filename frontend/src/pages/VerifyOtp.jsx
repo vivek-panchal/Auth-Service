@@ -37,21 +37,54 @@ const VerifyOtp = () => {
   };
 
   return (
-    <section className="text-gray-600 body-font">
-      <div className="container px-5 py-24 mx-auto flex flex-wrap items-center">
-        <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
-          <h1 className="title-font font-medium text-3xl text-gray-900">Slow-carb next level shoindcgoitch ethical authentic, poko scenester</h1>
-          <p className="leading-relaxed mt-4">Poke slow-carb mixtape knausgaard, typewriter street art gentrify hammock starladder roathse. Craies vegan tousled etsy austin.</p>
+    <section>
+      <div className="container max-w-5xl px-6 py-16 md:py-24 mx-auto">
+        <div className="flex items-center gap-3 mb-10">
+          <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 ring-1 ring-indigo-400/30">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2l7 4v6c0 5-3 7-7 10C8 19 5 17 5 12V6l7-4Z"/></svg>
+          </span>
+          <span className="text-sm font-semibold tracking-wide text-neutral-300">Auth Service</span>
         </div>
-        <form onSubmit={submitHandler} className="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
-          <h2 className="text-gray-900 text-lg font-medium title-font mb-5">Verify OTP</h2>
-          <div className="relative mb-4">
-            <label htmlFor="otp" className="leading-7 text-sm text-gray-600">Otp</label>
-            <input type="number" id="otp" name="otp" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" value={otp} onChange={(e) => setOtp(e.target.value)} required />
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+          <div className="space-y-4 md:pr-6">
+            <h1 className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400 tracking-tight">Verify your OTP</h1>
+            <p className="text-neutral-400">We sent an OTP to <span className="text-neutral-200 font-medium">{email}</span>. Enter it below to continue.</p>
+            <ul className="mt-4 space-y-2 text-sm text-neutral-400">
+              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> Check your inbox and spam folder</li>
+              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> OTP expires quickly for your security</li>
+            </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+              <div className="rounded-xl border border-white/10 p-4 bg-neutral-900/60">
+                <p className="text-xs text-neutral-400">Step 1</p>
+                <p className="text-sm text-neutral-200 mt-1">Open email client</p>
+              </div>
+              <div className="rounded-xl border border-white/10 p-4 bg-neutral-900/60">
+                <p className="text-xs text-neutral-400">Step 2</p>
+                <p className="text-sm text-neutral-200 mt-1">Copy the OTP code</p>
+              </div>
+            </div>
           </div>
-          <button className="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg" disabled={btnLoading}>{btnLoading ? 'Submitting...' : 'Verify'}</button>
-          <Link to="/login" className="text-xs text-gray-500 mt-3">Go to Login</Link>
-        </form>
+          <form onSubmit={submitHandler} className="bg-neutral-900/70 backdrop-blur rounded-2xl p-8 md:p-10 flex flex-col w-full ring-1 ring-white/10 shadow-xl shadow-black/30">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-indigo-500/20 text-indigo-400 ring-1 ring-indigo-400/30">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15V8a2 2 0 0 0-2-2h-1"/><path d="M3 8v7a2 2 0 0 0 2 2h1"/><rect x="7" y="5" width="10" height="14" rx="2"/><path d="M10 11h4"/><path d="M10 15h4"/></svg>
+              </span>
+              <h2 className="text-xl font-medium text-neutral-100">Enter OTP</h2>
+            </div>
+            <div className="mb-6">
+              <label htmlFor="otp" className="block text-sm text-neutral-400 mb-1">OTP</label>
+              <input type="number" id="otp" name="otp" className="w-full bg-neutral-900 text-neutral-200 placeholder-neutral-500 rounded-lg border border-neutral-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/40 outline-none py-2.5 px-3 transition-colors" value={otp} onChange={(e) => setOtp(e.target.value)} required />
+            </div>
+            <button className="inline-flex justify-center items-center gap-2 text-white bg-indigo-500 hover:bg-indigo-400 active:bg-indigo-600 border-0 py-2.5 px-4 rounded-lg text-base font-medium transition-colors disabled:opacity-60 shadow-lg shadow-indigo-500/20" disabled={btnLoading}>
+              {btnLoading ? 'Submitting...' : 'Verify'}
+            </button>
+            <div className="flex items-center justify-between mt-4 text-xs text-neutral-400">
+              <span>Having trouble?</span>
+              <span className="inline-flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> Recheck email address</span>
+            </div>
+            <Link to="/login" className="text-sm text-neutral-400 mt-3 hover:text-neutral-300 transition-colors">Go to Login</Link>
+          </form>
+        </div>
       </div>
     </section>
   );

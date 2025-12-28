@@ -31,29 +31,63 @@ const Register = () => {
     }
   }
   return (
-    <section className="text-gray-600 body-font">
-      <div className="container px-5 py-24 mx-auto flex flex-wrap items-center">
-        <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
-          <h1 className="title-font font-medium text-3xl text-gray-900">Slow-carb next level shoindcgoitch ethical authentic, poko scenester</h1>
-          <p className="leading-relaxed mt-4">Poke slow-carb mixtape knausgaard, typewriter street art gentrify hammock starladder roathse. Craies vegan tousled etsy austin.</p>
+    <section>
+      <div className="container max-w-5xl px-6 py-16 md:py-24 mx-auto">
+        <div className="flex items-center gap-3 mb-10">
+          <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 ring-1 ring-emerald-400/30">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2l7 4v6c0 5-3 7-7 10C8 19 5 17 5 12V6l7-4Z"/></svg>
+          </span>
+          <span className="text-sm font-semibold tracking-wide text-neutral-300">Auth Service</span>
         </div>
-        <form onSubmit={submitHandler} className="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
-          <h2 className="text-gray-900 text-lg font-medium title-font mb-5">Sign Up</h2>
-          <div className="relative mb-4">
-            <label htmlFor="name" className="leading-7 text-sm text-gray-600">Name</label>
-            <input type="text" id="name" name="name" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" value={name} onChange={(e) => setName(e.target.value)} required />
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+          <div className="space-y-4 md:pr-6">
+            <h1 className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-indigo-400 tracking-tight">Create your account</h1>
+            <p className="text-neutral-400">Start with a privacy-first, modern authentication experience.</p>
+            <ul className="mt-4 space-y-2 text-sm text-neutral-400">
+              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Quick signup with email & password</li>
+              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> OTP verification for secure access</li>
+              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-neutral-400"></span> Works beautifully on mobile and desktop</li>
+            </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+              <div className="rounded-xl border border-white/10 p-4 bg-neutral-900/60">
+                <p className="text-xs text-neutral-400">Minimal inputs</p>
+                <p className="text-sm text-neutral-200 mt-1">Frictionless onboarding</p>
+              </div>
+              <div className="rounded-xl border border-white/10 p-4 bg-neutral-900/60">
+                <p className="text-xs text-neutral-400">Email-first auth</p>
+                <p className="text-sm text-neutral-200 mt-1">Trusted delivery</p>
+              </div>
+            </div>
           </div>
-          <div className="relative mb-4">
-            <label htmlFor="email" className="leading-7 text-sm text-gray-600">Email</label>
-            <input type="email" id="email" name="email" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          </div>
-          <div className="relative mb-4">
-            <label htmlFor="password" className="leading-7 text-sm text-gray-600">Password</label>
-            <input type="password" id="password" name="password" className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          </div>
-          <button className="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg" disabled={btnLoading}>{btnLoading ? 'Submitting...' : 'Register'}</button>
-          <Link to="/login" className="text-xs text-gray-500 mt-3">Have an account?</Link>
-        </form>
+          <form onSubmit={submitHandler} className="bg-neutral-900/70 backdrop-blur rounded-2xl p-8 md:p-10 flex flex-col w-full ring-1 ring-white/10 shadow-xl shadow-black/30">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-emerald-500/20 text-emerald-400 ring-1 ring-emerald-400/30">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-3-3.87"/><path d="M4 21v-2a4 4 0 0 1 3-3.87"/><circle cx="12" cy="7" r="4"/></svg>
+              </span>
+              <h2 className="text-xl font-medium text-neutral-100">Create Account</h2>
+            </div>
+            <div className="mb-4">
+              <label htmlFor="name" className="block text-sm text-neutral-400 mb-1">Name</label>
+              <input type="text" id="name" name="name" className="w-full bg-neutral-900 text-neutral-200 placeholder-neutral-500 rounded-lg border border-neutral-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/40 outline-none py-2.5 px-3 transition-colors" value={name} onChange={(e) => setName(e.target.value)} required />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="email" className="block text-sm text-neutral-400 mb-1">Email</label>
+              <input type="email" id="email" name="email" className="w-full bg-neutral-900 text-neutral-200 placeholder-neutral-500 rounded-lg border border-neutral-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/40 outline-none py-2.5 px-3 transition-colors" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            </div>
+            <div className="mb-6">
+              <label htmlFor="password" className="block text-sm text-neutral-400 mb-1">Password</label>
+              <input type="password" id="password" name="password" className="w-full bg-neutral-900 text-neutral-200 placeholder-neutral-500 rounded-lg border border-neutral-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/40 outline-none py-2.5 px-3 transition-colors" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            </div>
+            <button className="inline-flex justify-center items-center gap-2 text-white bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 border-0 py-2.5 px-4 rounded-lg text-base font-medium transition-colors disabled:opacity-60 shadow-lg shadow-emerald-500/20" disabled={btnLoading}>
+              {btnLoading ? 'Submitting...' : 'Register'}
+            </button>
+            <div className="flex items-center justify-between mt-4 text-xs text-neutral-400">
+              <span>Privacy-first</span>
+              <span className="inline-flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Simple & Secure</span>
+            </div>
+            <Link to="/login" className="text-sm text-neutral-400 mt-3 hover:text-neutral-300 transition-colors">Have an account?</Link>
+          </form>
+        </div>
       </div>
     </section>
   )
