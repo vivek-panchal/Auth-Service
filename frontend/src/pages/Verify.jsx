@@ -4,7 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { server } from '../main.jsx';
 import axios from 'axios';
 import Loading from '../Loading';
-import { CheckCircle2, XCircle, ArrowLeft } from 'lucide-react';
+import { CheckCircle2, XCircle, ArrowRight, Shield } from 'lucide-react';
 
 const Verify = () => {
   const [successMessage, setSuccessMessage] = useState(''); 
@@ -33,51 +33,59 @@ const Verify = () => {
   return (
     <>
       {loading ? <Loading /> : 
-        <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)] px-4 py-8">
-          <div className="max-w-md w-full animate-fadeIn">
-            <div className="bg-[var(--bg-card)] rounded-2xl p-8 shadow-2xl border border-[var(--border-color)] text-center">
+        <div className="min-h-screen flex items-center justify-center px-5 py-10">
+          <div className="w-full max-w-[420px] animate-scaleIn">
+            <div className="form-card p-8 text-center">
               {successMessage ? (
                 <>
+                  {/* Success */}
                   <div className="flex justify-center mb-6">
-                    <div className="w-20 h-20 bg-[var(--success)] bg-opacity-20 rounded-full flex items-center justify-center">
-                      <CheckCircle2 className="w-12 h-12 text-[var(--success)]" />
+                    <div className="w-16 h-16 bg-[var(--success-bg)] rounded-xl flex items-center justify-center">
+                      <CheckCircle2 className="w-8 h-8 text-[var(--success)]" />
                     </div>
                   </div>
-                  <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-3">
-                    Verification Successful!
+                  
+                  <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
+                    Verified!
                   </h2>
-                  <p className="text-[var(--text-secondary)] mb-8">
+                  <p className="text-[var(--text-muted)] mb-7">
                     {successMessage}
                   </p>
-                  <Link 
-                    to="/login" 
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] hover:from-[var(--accent-hover)] hover:to-[var(--accent-primary)] text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
-                  >
+                  
+                  <Link to="/login" className="btn-primary">
                     Continue to Login
+                    <ArrowRight className="w-4 h-4" />
                   </Link>
                 </>
               ) : (
                 <>
+                  {/* Error */}
                   <div className="flex justify-center mb-6">
-                    <div className="w-20 h-20 bg-[var(--error)] bg-opacity-20 rounded-full flex items-center justify-center">
-                      <XCircle className="w-12 h-12 text-[var(--error)]" />
+                    <div className="w-16 h-16 bg-[var(--error-bg)] rounded-xl flex items-center justify-center">
+                      <XCircle className="w-8 h-8 text-[var(--error)]" />
                     </div>
                   </div>
-                  <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-3">
+                  
+                  <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
                     Verification Failed
                   </h2>
-                  <p className="text-[var(--text-secondary)] mb-8">
-                    {errorMessage}
+                  <p className="text-[var(--text-muted)] mb-7">
+                    {errorMessage || 'Something went wrong. Please try again.'}
                   </p>
-                  <Link 
-                    to="/login" 
-                    className="inline-flex items-center gap-2 text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors"
-                  >
-                    <ArrowLeft className="w-4 h-4" />
+                  
+                  <Link to="/login" className="btn-secondary w-full justify-center">
                     Back to Login
                   </Link>
                 </>
               )}
+            </div>
+            
+            {/* Footer */}
+            <div className="mt-6 text-center">
+              <div className="flex items-center justify-center gap-2 text-[var(--text-muted)]">
+                <Shield className="w-4 h-4" />
+                <span className="text-sm">AuthService</span>
+              </div>
             </div>
           </div>
         </div>

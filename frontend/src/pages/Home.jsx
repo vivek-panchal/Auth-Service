@@ -1,100 +1,124 @@
 import React from 'react'
 import { AppData } from '../context/AppContext.jsx'
 import { Link, useNavigate } from 'react-router-dom';
-import { Home as HomeIcon, LogOut, Shield, Settings } from 'lucide-react';
+import { LogOut, Shield, Settings, User, Mail, BadgeCheck, Lock, Zap, Eye } from 'lucide-react';
 
 const Home = () => {
   const { logoutUser, user } = AppData();
   const navigate = useNavigate();
   
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] flex items-center justify-center px-4 py-8">
-      <div className="max-w-2xl w-full animate-fadeIn">
-        {/* Welcome Card */}
-        <div className="bg-[var(--bg-card)] rounded-2xl p-8 shadow-2xl border border-[var(--border-color)] text-center mb-6">
-          <div className="flex justify-center mb-6">
-            <div className="w-20 h-20 bg-gradient-to-br from-[var(--accent-primary)] to-[var(--accent-secondary)] rounded-full flex items-center justify-center shadow-lg">
-              <Shield className="w-10 h-10 text-white" />
+    <div className="min-h-screen flex items-center justify-center px-5 py-10">
+      <div className="w-full max-w-[900px] mx-auto animate-fadeIn">
+        
+        {/* Main Card */}
+        <div className="form-card p-8 lg:p-10">
+          
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="flex justify-center mb-5">
+              <div className="w-16 h-16 rounded-xl bg-[var(--accent-primary)] flex items-center justify-center animate-glow">
+                <Shield className="w-8 h-8 text-white" />
+              </div>
             </div>
-          </div>
-          
-          <h1 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)] mb-2">
-            Welcome Back!
-          </h1>
-          
-          {user && (
-            <p className="text-lg text-[var(--text-secondary)] mb-6">
-              Hello, <span className="text-[var(--accent-primary)] font-semibold">{user.name}</span>
-            </p>
-          )}
-          
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--success)] bg-opacity-20 text-[var(--success)] rounded-lg text-sm font-medium mb-8">
-            <div className="w-2 h-2 bg-[var(--success)] rounded-full animate-pulse"></div>
-            Authenticated
+            
+            <h1 className="text-3xl font-bold text-[var(--text-primary)] mb-2">
+              Welcome Back
+            </h1>
+            
+            {user && (
+              <p className="text-lg text-[var(--text-secondary)]">
+                Hello, <span className="text-[var(--accent-primary)] font-semibold">{user.name}</span>
+              </p>
+            )}
+            
+            <div className="inline-flex items-center gap-2 px-4 py-2 mt-4 bg-[var(--success-bg)] text-[var(--success)] rounded-lg text-sm font-medium">
+              <div className="w-2 h-2 bg-[var(--success)] rounded-full animate-pulse"></div>
+              Authenticated
+            </div>
           </div>
 
           {/* User Info */}
           {user && (
-            <div className="bg-[var(--bg-secondary)] rounded-lg p-6 mb-6 border border-[var(--border-color)]">
-              <h3 className="text-sm font-medium text-[var(--text-muted)] mb-4">Account Details</h3>
-              <div className="space-y-3 text-left">
-                <div className="flex justify-between items-center">
-                  <span className="text-[var(--text-secondary)]">Email:</span>
-                  <span className="text-[var(--text-primary)] font-medium break-all ml-2">{user.email}</span>
+            <div className="bg-[var(--bg-secondary)] rounded-xl p-5 mb-8 border border-[var(--border-color)]">
+              <h3 className="text-sm font-medium text-[var(--text-muted)] mb-4 flex items-center gap-2">
+                <User className="w-4 h-4" />
+                Account Details
+              </h3>
+              
+              <div className="space-y-4">
+                <div className="flex items-center justify-between py-3 border-b border-[var(--border-color)]">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 bg-[var(--accent-glow)] rounded-lg flex items-center justify-center">
+                      <Mail className="w-4 h-4 text-[var(--accent-primary)]" />
+                    </div>
+                    <span className="text-[var(--text-secondary)] text-sm">Email</span>
+                  </div>
+                  <span className="text-[var(--text-primary)] font-medium text-sm truncate max-w-[200px]">{user.email}</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-[var(--text-secondary)]">Role:</span>
-                  <span className="text-[var(--text-primary)] font-medium capitalize">{user.role || 'User'}</span>
+                
+                <div className="flex items-center justify-between py-3 border-b border-[var(--border-color)]">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 bg-[var(--accent-glow)] rounded-lg flex items-center justify-center">
+                      <BadgeCheck className="w-4 h-4 text-[var(--accent-primary)]" />
+                    </div>
+                    <span className="text-[var(--text-secondary)] text-sm">Role</span>
+                  </div>
+                  <span className="px-3 py-1 bg-[var(--accent-glow)] text-[var(--accent-primary)] rounded-lg text-sm font-medium capitalize">
+                    {user.role || 'User'}
+                  </span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-[var(--text-secondary)]">Status:</span>
-                  <span className="text-[var(--success)] font-medium">Active</span>
+                
+                <div className="flex items-center justify-between py-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 bg-[var(--success-bg)] rounded-lg flex items-center justify-center">
+                      <BadgeCheck className="w-4 h-4 text-[var(--success)]" />
+                    </div>
+                    <span className="text-[var(--text-secondary)] text-sm">Status</span>
+                  </div>
+                  <span className="px-3 py-1 bg-[var(--success-bg)] text-[var(--success)] rounded-lg text-sm font-medium">
+                    Active
+                  </span>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Action Buttons */}
+          {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             {user && user.role === 'admin' && (
-              <Link 
-                to="/dashboard" 
-                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-secondary)] hover:from-[var(--accent-hover)] hover:to-[var(--accent-primary)] text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
-              >
+              <Link to="/dashboard" className="btn-primary">
                 <Settings className="w-5 h-5" />
                 Admin Dashboard
               </Link>
             )}
             
-            <button 
-              onClick={() => logoutUser(navigate)} 
-              className="inline-flex items-center justify-center gap-2 bg-[var(--bg-secondary)] hover:bg-[var(--error)] text-[var(--text-primary)] hover:text-white font-semibold py-3 px-6 rounded-lg border border-[var(--border-color)] hover:border-[var(--error)] transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
-            >
+            <button onClick={() => logoutUser(navigate)} className="btn-secondary">
               <LogOut className="w-5 h-5" />
-              Logout
+              Sign Out
             </button>
           </div>
         </div>
 
-        {/* Info Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-[var(--bg-card)] rounded-xl p-4 border border-[var(--border-color)] text-center">
-            <Shield className="w-8 h-8 text-[var(--accent-primary)] mx-auto mb-2" />
-            <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-1">Secure</h4>
-            <p className="text-xs text-[var(--text-muted)]">End-to-end encryption</p>
-          </div>
-          
-          <div className="bg-[var(--bg-card)] rounded-xl p-4 border border-[var(--border-color)] text-center">
-            <HomeIcon className="w-8 h-8 text-[var(--accent-primary)] mx-auto mb-2" />
-            <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-1">Protected</h4>
-            <p className="text-xs text-[var(--text-muted)]">24/7 monitoring</p>
-          </div>
-          
-          <div className="bg-[var(--bg-card)] rounded-xl p-4 border border-[var(--border-color)] text-center">
-            <Settings className="w-8 h-8 text-[var(--accent-primary)] mx-auto mb-2" />
-            <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-1">Compliant</h4>
-            <p className="text-xs text-[var(--text-muted)]">GDPR certified</p>
-          </div>
+        {/* Features */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+          {[
+            { icon: Lock, title: 'Encrypted', desc: 'End-to-end protection' },
+            { icon: Zap, title: 'Real-time', desc: '24/7 monitoring' },
+            { icon: Eye, title: 'Private', desc: 'Your data stays yours' }
+          ].map((item, i) => (
+            <div 
+              key={i}
+              className="info-card text-center animate-fadeIn"
+              style={{ animationDelay: `${i * 0.1}s` }}
+            >
+              <div className="w-11 h-11 bg-[var(--accent-glow)] rounded-lg flex items-center justify-center mx-auto mb-3">
+                <item.icon className="w-5 h-5 text-[var(--accent-primary)]" />
+              </div>
+              <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-1">{item.title}</h4>
+              <p className="text-xs text-[var(--text-muted)]">{item.desc}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
