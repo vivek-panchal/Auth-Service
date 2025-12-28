@@ -39,9 +39,15 @@ const VerifyOtp = () => {
   return (
     <section>
       <div className="container max-w-7xl px-6 py-16 md:py-24 mx-auto">
+        <div className="flex items-center gap-3 mb-10">
+          <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 ring-1 ring-indigo-400/30">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2l7 4v6c0 5-3 7-7 10C8 19 5 17 5 12V6l7-4Z"/></svg>
+          </span>
+          <span className="text-sm font-semibold tracking-wide text-neutral-300">Auth Service</span>
+        </div>
         <div className="grid md:grid-cols-2 gap-10 items-center">
           <div className="space-y-4 md:pr-6">
-            <h1 className="text-3xl md:text-4xl font-semibold text-neutral-100 tracking-tight">Verify your OTP</h1>
+            <h1 className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400 tracking-tight">Verify your OTP</h1>
             <p className="text-neutral-400">We sent an OTP to <span className="text-neutral-200 font-medium">{email}</span>. Enter it below to continue.</p>
           </div>
           <form onSubmit={submitHandler} className="bg-neutral-900/70 backdrop-blur rounded-2xl p-8 md:p-10 flex flex-col w-full ring-1 ring-white/10 shadow-xl shadow-black/30">

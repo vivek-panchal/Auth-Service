@@ -34,6 +34,12 @@ const Verify = () => {
         <Loading />
       ) : (
         <div className="bg-neutral-900/70 backdrop-blur rounded-2xl p-8 md:p-10 ring-1 ring-white/10 shadow-xl shadow-black/30">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-emerald-500/20 text-emerald-400 ring-1 ring-emerald-400/30">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2l7 4v6c0 5-3 7-7 10C8 19 5 17 5 12V6l7-4Z"/></svg>
+            </span>
+            <h2 className="text-xl font-medium text-neutral-100">Email Verification</h2>
+          </div>
           {successMessage ? (
             <p className="text-center text-emerald-400 text-lg">{successMessage}</p>
           ) : (

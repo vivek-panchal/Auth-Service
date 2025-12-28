@@ -31,17 +31,23 @@ const Login = () => {
   return (
     <section className="">
       <div className="container max-w-7xl px-6 py-16 md:py-24 mx-auto">
+        <div className="flex items-center gap-3 mb-10">
+          <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 ring-1 ring-indigo-400/30">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2l7 4v6c0 5-3 7-7 10C8 19 5 17 5 12V6l7-4Z"/></svg>
+          </span>
+          <span className="text-sm font-semibold tracking-wide text-neutral-300">Auth Service</span>
+        </div>
         <div className="grid md:grid-cols-2 gap-10 items-center">
           <div className="space-y-4 md:pr-6">
-            <h1 className="text-3xl md:text-4xl font-semibold text-neutral-100 tracking-tight">Welcome back</h1>
-            <p className="text-neutral-400">Access your account to continue. Your data is securely protected.</p>
+            <h1 className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400 tracking-tight">Welcome back</h1>
+            <p className="text-neutral-400">Sign in to continue. Privacy-first authentication with fast, secure access.</p>
           </div>
           <form onSubmit={submitHandler} className="bg-neutral-900/70 backdrop-blur rounded-2xl p-8 md:p-10 flex flex-col w-full ring-1 ring-white/10 shadow-xl shadow-black/30">
             <div className="flex items-center gap-3 mb-6">
               <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-indigo-500/20 text-indigo-400 ring-1 ring-indigo-400/30">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M19 11V7a7 7 0 1 0-14 0v4"/><rect x="5" y="11" width="14" height="10" rx="2"/></svg>
               </span>
-              <h2 className="text-xl font-medium text-neutral-100">Sign In</h2>
+              <h2 className="text-xl font-medium text-neutral-100">Log In</h2>
             </div>
             <div className="mb-4">
               <label htmlFor="email" className="block text-sm text-neutral-400 mb-1">Email</label>
