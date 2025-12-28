@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState, useContext } from "react";
-import { server } from "../main.jsx";
 import api from "../apiIntercepter.js";
 import { toast } from "react-toastify";
 
@@ -30,7 +29,8 @@ export const AppProvider = ({ children }) => {
             setIsAuth(false);
             toast.success(data.data.message);
             navigate('/login');
-        } catch (error) {
+        } catch {
+            // Error is intentionally not logged to avoid exposing sensitive session data
             toast.error("Error logging out user");
         }
     }
