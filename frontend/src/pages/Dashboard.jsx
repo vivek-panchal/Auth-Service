@@ -20,10 +20,14 @@ const Dashboard = () => {
     fetchAdminData();
   }, []);
   return (
-    <div>
-      {adminData ? <p className="text-center mt-10 text-green-600">{adminData}</p> :
-        <p className="text-center mt-10 text-red-600">Loading admin data...</p>
-      }
+    <div className="container max-w-3xl mx-auto px-6 py-20">
+      <div className="bg-neutral-900/70 backdrop-blur rounded-2xl p-8 md:p-10 ring-1 ring-white/10 shadow-xl shadow-black/30">
+        {adminData ? (
+          <p className="text-center text-emerald-400 text-lg">{adminData}</p>
+        ) : (
+          <p className="text-center text-neutral-400 text-lg">Loading admin data...</p>
+        )}
+      </div>
     </div>
   )
 }

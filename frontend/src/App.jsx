@@ -13,7 +13,7 @@ import Loading from './Loading.jsx'
 const App = () => {
   const {isAuth , loading} = AppData();
   return (
-   <>
+   <div className="min-h-screen bg-neutral-950 text-neutral-200 antialiased selection:bg-indigo-500/30">
     {loading ? <Loading /> : 
       <BrowserRouter>
         <Routes>
@@ -27,7 +27,7 @@ const App = () => {
         <ToastContainer />
       </BrowserRouter>
     }
-   </>
+   </div>
   )
 }
 

@@ -29,12 +29,19 @@ const Verify = () => {
     verifyUser();
   }, []);
   return (
-    <>
-      {loading ? <Loading /> : 
-        successMessage ? <p className="text-center mt-10 text-green-600">{successMessage}</p> :
-        <p className="text-center mt-10 text-red-600">{errorMessage}</p>
-      }
-    </>
+    <div className="container max-w-3xl mx-auto px-6 py-20">
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="bg-neutral-900/70 backdrop-blur rounded-2xl p-8 md:p-10 ring-1 ring-white/10 shadow-xl shadow-black/30">
+          {successMessage ? (
+            <p className="text-center text-emerald-400 text-lg">{successMessage}</p>
+          ) : (
+            <p className="text-center text-rose-400 text-lg">{errorMessage}</p>
+          )}
+        </div>
+      )}
+    </div>
   )
 }
 
