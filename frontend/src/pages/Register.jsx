@@ -32,7 +32,7 @@ const Register = () => {
   }
   return (
     <section>
-      <div className="container max-w-7xl px-6 py-16 md:py-24 mx-auto">
+      <div className="container max-w-5xl px-6 py-16 md:py-24 mx-auto">
         <div className="flex items-center gap-3 mb-10">
           <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 ring-1 ring-emerald-400/30">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2l7 4v6c0 5-3 7-7 10C8 19 5 17 5 12V6l7-4Z"/></svg>
@@ -43,6 +43,21 @@ const Register = () => {
           <div className="space-y-4 md:pr-6">
             <h1 className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-indigo-400 tracking-tight">Create your account</h1>
             <p className="text-neutral-400">Start with a privacy-first, modern authentication experience.</p>
+            <ul className="mt-4 space-y-2 text-sm text-neutral-400">
+              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Quick signup with email & password</li>
+              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> OTP verification for secure access</li>
+              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-neutral-400"></span> Works beautifully on mobile and desktop</li>
+            </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+              <div className="rounded-xl border border-white/10 p-4 bg-neutral-900/60">
+                <p className="text-xs text-neutral-400">Minimal inputs</p>
+                <p className="text-sm text-neutral-200 mt-1">Frictionless onboarding</p>
+              </div>
+              <div className="rounded-xl border border-white/10 p-4 bg-neutral-900/60">
+                <p className="text-xs text-neutral-400">Email-first auth</p>
+                <p className="text-sm text-neutral-200 mt-1">Trusted delivery</p>
+              </div>
+            </div>
           </div>
           <form onSubmit={submitHandler} className="bg-neutral-900/70 backdrop-blur rounded-2xl p-8 md:p-10 flex flex-col w-full ring-1 ring-white/10 shadow-xl shadow-black/30">
             <div className="flex items-center gap-3 mb-6">
@@ -66,7 +81,11 @@ const Register = () => {
             <button className="inline-flex justify-center items-center gap-2 text-white bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 border-0 py-2.5 px-4 rounded-lg text-base font-medium transition-colors disabled:opacity-60 shadow-lg shadow-emerald-500/20" disabled={btnLoading}>
               {btnLoading ? 'Submitting...' : 'Register'}
             </button>
-            <Link to="/login" className="text-sm text-neutral-400 mt-4 hover:text-neutral-300 transition-colors">Have an account?</Link>
+            <div className="flex items-center justify-between mt-4 text-xs text-neutral-400">
+              <span>Privacy-first</span>
+              <span className="inline-flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Simple & Secure</span>
+            </div>
+            <Link to="/login" className="text-sm text-neutral-400 mt-3 hover:text-neutral-300 transition-colors">Have an account?</Link>
           </form>
         </div>
       </div>

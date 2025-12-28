@@ -38,7 +38,7 @@ const VerifyOtp = () => {
 
   return (
     <section>
-      <div className="container max-w-7xl px-6 py-16 md:py-24 mx-auto">
+      <div className="container max-w-5xl px-6 py-16 md:py-24 mx-auto">
         <div className="flex items-center gap-3 mb-10">
           <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 ring-1 ring-indigo-400/30">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2l7 4v6c0 5-3 7-7 10C8 19 5 17 5 12V6l7-4Z"/></svg>
@@ -49,6 +49,20 @@ const VerifyOtp = () => {
           <div className="space-y-4 md:pr-6">
             <h1 className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400 tracking-tight">Verify your OTP</h1>
             <p className="text-neutral-400">We sent an OTP to <span className="text-neutral-200 font-medium">{email}</span>. Enter it below to continue.</p>
+            <ul className="mt-4 space-y-2 text-sm text-neutral-400">
+              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> Check your inbox and spam folder</li>
+              <li className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> OTP expires quickly for your security</li>
+            </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+              <div className="rounded-xl border border-white/10 p-4 bg-neutral-900/60">
+                <p className="text-xs text-neutral-400">Step 1</p>
+                <p className="text-sm text-neutral-200 mt-1">Open email client</p>
+              </div>
+              <div className="rounded-xl border border-white/10 p-4 bg-neutral-900/60">
+                <p className="text-xs text-neutral-400">Step 2</p>
+                <p className="text-sm text-neutral-200 mt-1">Copy the OTP code</p>
+              </div>
+            </div>
           </div>
           <form onSubmit={submitHandler} className="bg-neutral-900/70 backdrop-blur rounded-2xl p-8 md:p-10 flex flex-col w-full ring-1 ring-white/10 shadow-xl shadow-black/30">
             <div className="flex items-center gap-3 mb-6">
@@ -64,7 +78,11 @@ const VerifyOtp = () => {
             <button className="inline-flex justify-center items-center gap-2 text-white bg-indigo-500 hover:bg-indigo-400 active:bg-indigo-600 border-0 py-2.5 px-4 rounded-lg text-base font-medium transition-colors disabled:opacity-60 shadow-lg shadow-indigo-500/20" disabled={btnLoading}>
               {btnLoading ? 'Submitting...' : 'Verify'}
             </button>
-            <Link to="/login" className="text-sm text-neutral-400 mt-4 hover:text-neutral-300 transition-colors">Go to Login</Link>
+            <div className="flex items-center justify-between mt-4 text-xs text-neutral-400">
+              <span>Having trouble?</span>
+              <span className="inline-flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-indigo-400"></span> Recheck email address</span>
+            </div>
+            <Link to="/login" className="text-sm text-neutral-400 mt-3 hover:text-neutral-300 transition-colors">Go to Login</Link>
           </form>
         </div>
       </div>

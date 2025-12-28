@@ -29,7 +29,7 @@ const Verify = () => {
     verifyUser();
   }, []);
   return (
-    <div className="container max-w-3xl mx-auto px-6 py-20">
+    <div className="container max-w-5xl mx-auto px-6 py-20">
       {loading ? (
         <Loading />
       ) : (
@@ -45,6 +45,21 @@ const Verify = () => {
           ) : (
             <p className="text-center text-rose-400 text-lg">{errorMessage}</p>
           )}
+          <p className="text-xs text-neutral-500 mt-4 text-center">If verification fails, ensure you used the latest link.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
+            <div className="rounded-xl border border-white/10 p-4 bg-neutral-900/60">
+              <p className="text-xs text-neutral-400">Step 1</p>
+              <p className="text-sm text-neutral-200 mt-1">Open latest email</p>
+            </div>
+            <div className="rounded-xl border border-white/10 p-4 bg-neutral-900/60">
+              <p className="text-xs text-neutral-400">Step 2</p>
+              <p className="text-sm text-neutral-200 mt-1">Click verification link</p>
+            </div>
+            <div className="rounded-xl border border-white/10 p-4 bg-neutral-900/60">
+              <p className="text-xs text-neutral-400">Step 3</p>
+              <p className="text-sm text-neutral-200 mt-1">Return to the app</p>
+            </div>
+          </div>
         </div>
       )}
     </div>
