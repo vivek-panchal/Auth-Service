@@ -11,12 +11,10 @@ const getCookie = (name) => {
 const api = axios.create({
   baseURL: server,
   withCredentials: true,
-  timeout: 30000, // 30 second timeout to handle Render cold starts
 });
 
 api.interceptors.request.use((config) => {
-    const method = config.method?.toLowerCase();
-    if (method === 'post' || method === 'put' || method === 'delete') {
+    if (config.method === 'POST' || config.method === 'PUT' || config.method === 'DELETE') {
       const csrfToken = getCookie('csrfToken');
      if (csrfToken) {
         config.headers['X-CSRF-Token'] = csrfToken;
