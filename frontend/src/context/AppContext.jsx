@@ -8,13 +8,19 @@ export const AppProvider = ({ children }) => {
   const [user, setUser]= useState(null);
   const [loading, setLoading]= useState(true);
   const [isAuth , setIsAuth]= useState(false);
-  async function fetchUser(){
+  
+  async function fetchUser(retryCount = 0){
         try {
             const response = await api.get(`/api/v1/me`);
             setUser(response.data.user);
             setIsAuth(true);
         } catch (error) {
             console.log("Error fetching user:", error);
+            // Retry once on network error (handles Render cold start)
+            if (retryCount < 1 && (error.code === 'ECONNABORTED' || error.message?.includes('timeout') || error.message?.includes('Network Error'))) {
+                console.log("Retrying fetch user due to timeout...");
+                return fetchUser(retryCount + 1);
+            }
             setUser(null);
             setIsAuth(false);
         }finally{
