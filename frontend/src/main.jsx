@@ -4,7 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import { AppProvider } from './context/AppContext.jsx';
 
-export const server = 'https://auth-service-9yb2-d6m25cizy-vivek-panchals-projects.vercel.app';
+export const server = 'https://auth-service-6okf.onrender.com';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
