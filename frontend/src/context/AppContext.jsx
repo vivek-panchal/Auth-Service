@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState, useContext } from "react";
-import { server } from "../main.jsx";
 import api from "../apiIntercepter.js";
 import { toast } from "react-toastify";
 
@@ -11,7 +10,7 @@ export const AppProvider = ({ children }) => {
   const [isAuth , setIsAuth]= useState(false);
   async function fetchUser(){
         try {
-            const response = await api.get(`api/v1/me`);
+            const response = await api.get(`/api/v1/me`);
             setUser(response.data.user);
             setIsAuth(true);
         } catch (error) {
@@ -25,7 +24,7 @@ export const AppProvider = ({ children }) => {
 
     async function logoutUser(navigate){
         try {
-            const data = await api.post(`api/v1/logout`);
+            const data = await api.post(`/api/v1/logout`);
             setUser(null);
             setIsAuth(false);
             toast.success(data.data.message);
