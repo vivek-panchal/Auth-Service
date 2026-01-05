@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const server = 'http://localhost:5000';
+const server = 'https://auth-service-9yb2-d6m25cizy-vivek-panchals-projects.vercel.app';
 
 const getCookie = (name) => {
   const value = `; ${document.cookie}`;
